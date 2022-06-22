@@ -1,22 +1,16 @@
 
 import hashlib
 
-import sys
-print(sys.getrecursionlimit()) # Prints 1000
-
-txList = ['tx1', 'tx2', 'tx3','tx4', 'tx5']
-hashList = []	
-
-#print(len(txList))
-
 def hasheo(message):
 	return hashlib.sha256(message.encode()).hexdigest()
 
-for tx in txList:
-	hashList.append(hasheo(tx))
-	#print(f'{hashList} \n')
-	
-	
+# Solo se ejecuta en este módulo, utilizado para hacerle prueba
+if __name__ == '__main__':	
+	txList = ['tx1', 'tx2', 'tx3','tx4', 'tx5']
+	hashList = []	
+	for tx in txList:
+		hashList.append(hasheo(tx))
+
 def merkleFunction(hashList):
 	newHashList = []
 	while (len(hashList)!= 0 or len(newHashList) !=0):
@@ -38,23 +32,20 @@ def merkleFunction(hashList):
 			hashList = newHashList.copy()
 			print(hashList)
 			newHashList.clear()
-			#merkleFunction(hashList)
-
+			
 		elif len(hashList) == 0  and len(newHashList) ==1:
 			print('****ROOT****')
 			hashRoot = newHashList[0]
 			newHashList.clear()
-			print(f'Hash Root: {hashRoot}')
-
-		
+			print(f'Hash Root: {hashRoot}')		
 
 		print(f' HashList: {hashList}')		
-		print(f'New hash Lista:{newHashList}')
+		print(f'New hashList:{newHashList}')
 		print('*************************************************************')
 	
 
-	
-merkleFunction(hashList)
+if __name__ == '__main__':	
+	merkleFunction(hashList)
 
 
 
