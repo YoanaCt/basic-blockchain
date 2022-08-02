@@ -1,31 +1,32 @@
-import hashlib
+from hash import hasheo
 import random
-
-def hasheo(message):
-	return hashlib.sha256(message.encode()).hexdigest()
+from random import randint
 	
-def getNonce(message,difficulty):
-	pow = message
+def mineBlock(message,difficulty):
+	pofw = message
 	zeroInhash = 0
 
 	while zeroInhash != difficulty:
-		nonce = str(random.random())
-		pow = hasheo(pow + nonce)	
+		nonce = str(randint(0,9999999999999999999999999999999))
+		pofw = hasheo(pofw + nonce)	
 		
-		for character in pow[0:difficulty]:
-			miner = random.randrange(1,5)
-			if character != '0':				
+		for character in pofw[0:difficulty]:
+			miner = random.randrange(1,5)  # Se elige aleatoriamente un minero de las wallets 			
+			if character != '0':					 # presdeterminadas para simular a un minero que realiza la pofw
 				zeroInhash = 0
 				break			
 			zeroInhash += 1		
-	return nonce, miner, pow
+	return nonce, miner, pofw
 
-
-if __name__ == '__main__':
-	difficulty = 1
-	miner =  getNonce('message',difficulty)[1]
-	nonce = getNonce('message',difficulty)[0]
-	pow = getNonce('message',difficulty)[2]
-	print(f'El nonce que cumple es: {nonce}\nEl hash encontrado es: {pow} ')
+# Solo se ejecuta en este módulo, utilizado para hacer pruebas
+if __name__ == '__main__': 
+	difficulty = 4
+	mineBlock('message',difficulty)
+	miner =  mineBlock('message',difficulty)[1]
+	nonce = mineBlock('message',difficulty)[0]
+	pow = mineBlock('message',difficulty)[2]
+	print(f'El nonce de esta prueba de trabajo es: {nonce}\nEl hash encontrado es: {pow} ')
 	print(f'El minero que realizó esta prueba de trabajo es: {miner}' )
 	
+	
+
