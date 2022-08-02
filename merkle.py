@@ -1,10 +1,7 @@
 
-import hashlib
+from hash import hasheo
 
-def hasheo(message):
-	return hashlib.sha256(message.encode()).hexdigest()
-
-# Solo se ejecuta en este módulo, utilizado para hacerle prueba
+# Solo se ejecuta en este módulo, utilizado para hacer pruebas
 if __name__ == '__main__':	
 	txList = ['tx1', 'tx2', 'tx3','tx4', 'tx5']
 	hashList = []	
@@ -13,7 +10,7 @@ if __name__ == '__main__':
 
 def merkleFunction(hashList):
 	newHashList = []
-	while (len(hashList)!= 0 or len(newHashList) !=0):
+	while (len(hashList)!= 0 or len(newHashList) !=0): 
 		if len(hashList)  > 1:
 			newElement = hashList[0] + hashList[1]
 			del hashList[:2]
@@ -33,17 +30,13 @@ def merkleFunction(hashList):
 			print(hashList)
 			newHashList.clear()
 			
-		elif len(hashList) == 0  and len(newHashList) ==1:
-			print('****ROOT****')
+		elif len(hashList) == 0  and len(newHashList) ==1:			
 			hashRoot = newHashList[0]
-			newHashList.clear()
-			print(f'Hash Root: {hashRoot}')		
+			newHashList.clear()					
+			return(hashRoot)
 
-		print(f' HashList: {hashList}')		
-		print(f'New hashList:{newHashList}')
-		print('*************************************************************')
-	
 
+# Solo se ejecuta en este módulo, utilizado para hacer pruebas
 if __name__ == '__main__':	
 	merkleFunction(hashList)
 
