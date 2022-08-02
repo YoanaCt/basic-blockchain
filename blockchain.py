@@ -1,66 +1,61 @@
 from block import *
-from tx import *
+from transaction import *
+from merkle import *
+from proof_of_work import *
 
-class Blockchain:
-	def __init__(self,difficulty):
-		self.difficulty = difficulty
-
-	def hasheo(message):
-		return hashlib.sha256(message.encode()).hexdigest()
-
-	def buildBlockchain():
-		hashBlockIndex = {}	
-		height = 0
-		transactions = []		
-
-		if height==0:
-			hashPrevious = hasheo('Hash previo del bloque génesis')
-			pof = getNonce('message',1)
-			nonce = pof[0]
-			miner = pof[1]
-			wallets[miner] = reward
-			coins -= reward
-			tx = f'Pimer bloque minado por: {miner}, recibe {reward} de recompensa'
-
-			block = {
-				"header": {
-					"hashPrevious": hashPrevious,
-					"nonce": nonce			
-				},
-				"body": {
-					"transaction": tx
-				}
-			}
-			blockToString = json.dumps(block)
-			hashBlock = hasheo(blockToString)
-			#print(hashBlock)
-
-			height += 1
-			hashBlockIndex[str(len(hashBlockIndex))] = hashBlock
-
-		else:		
-			makeTransactions = 'y'
-			hashTxList = []
-			hashPrevious = hashBlockIndex[str(len(hashBlockIndex)-1)]
-			while(makeTransactions == 'y'):
-				transactions = input('Hacer transacción: y/n')
-				
-				walletOrigin = input('ingrese la wallet origen')
-				walletDestiny = input('ingrese la wallet destino')
-				send = input('Ingrese el monto a enviar')
-				tx = transaction(walletOrigin, walletOrigin, send)
-				transactions.append[tx]
-
-				for index in tx:
-					hashTxList.append(hasheo(tx))	
-
-			transaction = hashTxList[0]
-			
-			buidBlock('message', difficulty, hashList, transaction, hashPrevious)
-
-
-		#print(hashPrevious)
+def buildBlockchain(difficulty):	
 	
+	# Atibutos iniciales de la blockchain
+	hashBlockIndex = {}	
+	txList = []	 #Lista para almacenar las transacciones efectuadas
+	blockNumber = -1
+	height = blockNumber
+	hashPrevious = hasheo('Hash previo para el bloque génesis')
 	
-			
-blockchain1 = Blockchain(1)
+	# llamado a la función buildBlock para construir el bloque génesis
+	block = buildBlock('message', difficulty, hashPrevious, coins, hashBlockIndex, txList)
+
+	hashBlock = block[0]
+	miner = block[1]
+	rootHash = block[2]
+	nonce = block[3]	
+
+	# Metadata correspondiente al bloque génesis
+	hashBlockIndex[str(len(hashBlockIndex))] = hashBlock
+	blockNumber += 1
+	height += 1
+
+	print(f'Bloque {blockNumber}'.center(50,'-'))
+	print(f'Hash: {hashBlock} ')
+	print(f'Hash previo: {hashPrevious} ')
+	print(f'Miner: {miner} ' )
+	print(f'Merkle Root: {rootHash} ' )
+	print(f'Nonce: {nonce} ' )
+
+	#Llamado a la función que obtiene las transacciones 
+	txList = getTransactions()
+
+	# Recorre la lista de transacciones y construye un bloque por transacción
+	while txList:
+		block = buildBlock('message', difficulty, hashBlock, block[5], hashBlockIndex, txList)
+
+		hashBlock = block[0]
+		miner = block[1]
+		rootHash = block[2]
+		nonce = block[3]
+		hashPrevious = block[4]
+
+		hashBlockIndex[str(len(hashBlockIndex))] = hashBlock
+		#hashPrevious = hashBlockIndex[str(len(hashBlockIndex))]
+		blockNumber += 1
+		height += 1
+		
+		print(f'Bloque {blockNumber}'.center(50,'-'))
+		print(f'Hash: {hashBlock} ')
+		print(f'Hash previo: {hashPrevious} ')
+		print(f'Miner: {miner} ' )
+		print(f'Merkle Root: {rootHash} ' )
+		print(f'Nonce: {nonce} ' )
+
+	
+buildBlockchain(5)
