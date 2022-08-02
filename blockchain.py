@@ -53,9 +53,8 @@ def buildBlockchain(difficulty):
 		print(f'Bloque {blockNumber}'.center(50,'-'))
 		print(f'Hash: {hashBlock} ')
 		print(f'Hash previo: {hashPrevious} ')
-		print(f'Miner: {miner} ' )
-		print(f'Merkle Root: {rootHash} ' )
-		print(f'Nonce: {nonce} ' )
-
+		print(f'Miner: {miner}' )
+		print(f'Merkle Root: {rootHash}' )
+		print(f'Nonce: {nonce}')
 	
 buildBlockchain(5)
