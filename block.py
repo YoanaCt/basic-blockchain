@@ -1,38 +1,49 @@
 import json
-#import datetime
+import datetime
 from merkle import *
-#from tx import *
+from transaction import *
 from proof_of_work import *
+from hash import hasheo
 
-if __name__ == '__main__':	
-	hashList = []	
-	txList = ['tx1', 'tx2', 'tx3','tx4', 'tx5']
-	
-	for tx in txList:
-		hashList.append(hasheo(tx))
-	
 
-def buidBlock(message, difficulty, hashList, transaction, hashPrevious):
-	#timeStamp = datetime.datetime.now() 
+def buildBlock(message, difficulty, hashPrevious, coins, hashBlockIndex, txList):
+	#timestamp = datetime.datetime.now() 
+	
+	pofw = mineBlock(message, difficulty)
+	nonce  = pofw[0]
+	miner = pofw[1]	
+	keyMiner = str(miner)
+	wallets[keyMiner] = reward
+	coins -= reward
+	rootHash = None
+	hashList = []
+
+	if len(hashBlockIndex) == 0:		
+		transaction = f'Pimer bloque minado por: {miner}, recibe {reward} de recompensa'
+	else:		
+		tx = txList[0]		
+		hashList.append(tx)		
+		del txList[0]
+		transaction = hashList.copy()
+		rootHash = merkleFunction(hashList)
 
 	block = {
-		"header": {
+		"header": {			
 			"hashPrevious": hashPrevious,
-			"nonce": getNonce(message, difficulty),
-			"rootHash": merkleFunction(hashList),	
+			"nonce": nonce,
+			"rootHash": rootHash
 		},
 		"body": {
-			"transaction": transaction
+			"transactions": transaction
 		}
-	}
-	blockString = json.dumps(block)
-	print(f'bloque string {blockString}')
-	hashBlock = hasheo(blockString)
-	print(f'El hash de este bloque es: {hashBlock}' )
+	}	
 	
-	return hashBlock
+	blockString = json.dumps(block)	
+	hashBlock = hasheo(blockString)
+	#print(f'El hash de este bloque es: {hashBlock}' )	
+	return hashBlock, miner, rootHash, nonce, hashPrevious, coins
 
 
-if __name__ == '__main__':	
-	tx = 'transacción exitosa'
-	buidBlock('hello world', 1, hashList, tx, hasheo('message'))
+
+
+
