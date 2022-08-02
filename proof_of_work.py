@@ -2,7 +2,7 @@ from hash import hasheo
 import random
 from random import randint
 	
-def mineBlock(message,difficulty):
+def mineBlock(message, difficulty):
 	pofw = message
 	zeroInhash = 0
 
